@@ -17,7 +17,7 @@ public class OwnerController {
         this.ownerService = ownerService;
     }
 
-    @GetMapping(value = "/{id}", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json", "application/xml"})
     public WebResponseVO findOwner(@PathVariable(required = false) Integer id) {
         return new WebResponseVO(id != null ? ownerService.findOwner(id) : ownerService.findOwners());
     }
@@ -27,7 +27,7 @@ public class OwnerController {
         return new WebResponseVO(ownerService.saveOrUpdateOwner(ownerVO));
     }
 
-    @DeleteMapping(value = "/{id}", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = {"application/json", "application/xml"})
     public WebResponseVO removeOwner(@PathVariable Integer id) {
         return new WebResponseVO(ownerService.removeOwner(id));
     }

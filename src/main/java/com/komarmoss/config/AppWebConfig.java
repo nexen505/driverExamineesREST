@@ -56,7 +56,7 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
     public DataSource dataSource() {
         final JndiDataSourceLookup jndiDataSourceLookup = new JndiDataSourceLookup();
         jndiDataSourceLookup.setResourceRef(true);
-        return jndiDataSourceLookup.getDataSource("jdbc/ExdrPool"); //TODO add correct jndi name of DBMS
+        return jndiDataSourceLookup.getDataSource("jdbc/ExdrPool"); // add correct jndi name of DBMS
     }
 
     @Bean

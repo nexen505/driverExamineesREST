@@ -17,7 +17,7 @@ public class VehicleController {
         this.vehicleService = vehicleService;
     }
 
-    @GetMapping(value = "/{id}", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json", "application/xml"})
     public WebResponseVO findVehicle(@PathVariable(required = false) Integer id) {
         return new WebResponseVO(id != null ? vehicleService.findVehicle(id) : vehicleService.findVehicles());
     }
@@ -27,12 +27,12 @@ public class VehicleController {
         return new WebResponseVO(vehicleService.saveOrUpdateVehicle(vehicleVO));
     }
 
-    @DeleteMapping(value = "/{id}", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = {"application/json", "application/xml"})
     public WebResponseVO removeVehicle(@PathVariable Integer id) {
         return new WebResponseVO(vehicleService.removeVehicle(id));
     }
 
-    @GetMapping(value = "/types", produces = {"application/json", "application/xml"})
+    @RequestMapping(value = "/types", method = RequestMethod.GET, produces = {"application/json", "application/xml"})
     public WebResponseVO getTypesOfVehicle() {
         return new WebResponseVO(vehicleService.getTypesOfVehicles());
     }

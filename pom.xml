@@ -54,7 +54,7 @@
             <id>mossoulina</id>
             <properties>
                 <glassfish.autodeploy.path>
-                    <!-- TODO add your server path, for example: D:/University/servers/payara-4.1.2.173/payara41/glassfish/domains/domain1/autodeploy-->
+                    <!-- add your server path, for example: D:/University/servers/payara-4.1.2.173/payara41/glassfish/domains/domain1/autodeploy-->
                 </glassfish.autodeploy.path>
             </properties>
             <build>

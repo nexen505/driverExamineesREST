@@ -1,6 +1,8 @@
 package com.komarmoss.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.komarmoss.messaging.service.MessageReceiver;
+import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.command.ActiveMQQueue;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,9 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
+import org.springframework.jms.connection.CachingConnectionFactory;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -33,16 +38,13 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public MappingJackson2HttpMessageConverter customJackson2HttpMessageConverter() {
-        MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
-        ObjectMapper objectMapper = customObjectMapper();
-        jsonConverter.setObjectMapper(objectMapper);
+        MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter(customObjectMapper());
         return jsonConverter;
     }
 
     @Bean
     public Jaxb2RootElementHttpMessageConverter jaxb2RootElementHttpMessageConverter() {
-        Jaxb2RootElementHttpMessageConverter converter = new Jaxb2RootElementHttpMessageConverter();
-        return converter;
+        return new Jaxb2RootElementHttpMessageConverter();
     }
 
     @Override
@@ -80,6 +82,44 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
     @Bean
     public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
+    }
+
+    @Bean
+    public ActiveMQConnectionFactory amqConnectionFactory() {
+        return new ActiveMQConnectionFactory("tcp://localhost:61616");
+    }
+
+    @Bean
+    public CachingConnectionFactory connectionFactory() {
+        CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(amqConnectionFactory());
+        cachingConnectionFactory.setSessionCacheSize(10);
+        return cachingConnectionFactory;
+    }
+
+    @Bean
+    public MessageReceiver getJmsMessageReceiver() {
+        return new MessageReceiver();
+    }
+
+    @Bean
+    public ActiveMQQueue destination() {
+        return new ActiveMQQueue("queue.queue_in");
+    }
+
+    @Bean
+    public DefaultMessageListenerContainer messageListenerContainer() {
+        DefaultMessageListenerContainer defaultMessageListenerContainer = new DefaultMessageListenerContainer();
+        defaultMessageListenerContainer.setConnectionFactory(connectionFactory());
+        defaultMessageListenerContainer.setDestination(destination());
+        defaultMessageListenerContainer.setMessageListener(getJmsMessageReceiver());
+        return defaultMessageListenerContainer;
+    }
+
+    @Bean
+    public JmsTemplate jmsTemplate() {
+        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory());
+        jmsTemplate.setDefaultDestination(destination());
+        return jmsTemplate;
     }
 
 }

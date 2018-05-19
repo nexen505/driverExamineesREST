@@ -15,11 +15,11 @@ import java.util.List;
 public abstract class AbstractDAOImpl<T extends Identifiable, ID extends Serializable>
         implements AbstractDAO<T, ID> {
 
+    protected Class daoType;
     //    @PersistenceContext
 //    protected EntityManager entityManager;
     @Autowired
     private SessionFactory factory;
-    protected Class daoType;
 
     public AbstractDAOImpl() {
         Type t = getClass().getGenericSuperclass();

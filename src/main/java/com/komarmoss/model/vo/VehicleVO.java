@@ -3,15 +3,15 @@ package com.komarmoss.model.vo;
 import com.komarmoss.model.entity.OwnerEntity;
 import com.komarmoss.model.entity.TypeOfVehicleEntity;
 import com.komarmoss.model.entity.VehicleEntity;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 
 @XmlRootElement(name = "vehicle")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class VehicleVO implements Serializable {
+public class VehicleVO implements ValueObject<VehicleEntity> {
     private Integer id;
     private String name;
     private String brand;
@@ -20,10 +20,6 @@ public class VehicleVO implements Serializable {
     private OwnerVO owner;
 
     public VehicleVO() {
-    }
-
-    public VehicleVO(Integer id) {
-        this.id = id;
     }
 
     public VehicleVO(VehicleEntity entity) {
@@ -42,6 +38,7 @@ public class VehicleVO implements Serializable {
         }
     }
 
+    @NotNull
     public VehicleEntity createEntity() {
         VehicleEntity vehicleEntity = new VehicleEntity();
         vehicleEntity.setId(id);

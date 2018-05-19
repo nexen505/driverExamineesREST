@@ -1,5 +1,7 @@
 package com.komarmoss.service;
 
+import com.komarmoss.messaging.model.vo.ChangesMessageVO;
+import com.komarmoss.messaging.service.MessageSender;
 import com.komarmoss.model.dao.TypeOfVehicleDAO;
 import com.komarmoss.model.dao.VehicleDAO;
 import com.komarmoss.model.entity.VehicleEntity;
@@ -16,12 +18,16 @@ import java.util.stream.Collectors;
 public class VehicleServiceImpl implements VehicleService {
 
     private final VehicleDAO vehicleDAO;
+
     private final TypeOfVehicleDAO typeOfVehicleDAO;
 
+    private final MessageSender messageSender;
+
     @Autowired
-    public VehicleServiceImpl(VehicleDAO vehicleDAO, TypeOfVehicleDAO typeOfVehicleDAO) {
+    public VehicleServiceImpl(VehicleDAO vehicleDAO, TypeOfVehicleDAO typeOfVehicleDAO, MessageSender messageSender) {
         this.vehicleDAO = vehicleDAO;
         this.typeOfVehicleDAO = typeOfVehicleDAO;
+        this.messageSender = messageSender;
     }
 
     @Override
@@ -44,6 +50,7 @@ public class VehicleServiceImpl implements VehicleService {
     public VehicleVO saveOrUpdateVehicle(VehicleVO vehicle) {
         VehicleEntity vehicleEntity = vehicle.createEntity();
         vehicleDAO.saveOrUpdateItem(vehicleEntity);
+        messageSender.send(vehicle.getId() == null ? ChangesMessageVO.createCreateMessage(vehicle) : ChangesMessageVO.createUpdateMessage(vehicle));
         return findVehicle(vehicleEntity.getId());
     }
 
@@ -52,6 +59,7 @@ public class VehicleServiceImpl implements VehicleService {
     public boolean removeVehicle(Integer id) {
         if (id != null) {
             vehicleDAO.removeItemById(id);
+            messageSender.send(ChangesMessageVO.createDeleteMessage(id));
             return true;
         }
         return false;

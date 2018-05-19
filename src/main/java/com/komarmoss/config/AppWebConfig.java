@@ -1,6 +1,6 @@
 package com.komarmoss.config;
 
-import com.komarmoss.messaging.service.MessageReceiver;
+import com.komarmoss.messaging.service.DBMessageReceiver;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.hibernate.SessionFactory;
@@ -97,8 +97,8 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public MessageReceiver getJmsMessageReceiver() {
-        return new MessageReceiver();
+    public DBMessageReceiver getJmsMessageReceiver() {
+        return new DBMessageReceiver();
     }
 
     @Bean

@@ -9,10 +9,10 @@ import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider;
 
 import java.io.IOException;
 
-class CustomObjectMapper extends ObjectMapper {
+public class CustomObjectMapper extends ObjectMapper {
     private static final String EMPTY_STR_RPL = "-";
 
-    CustomObjectMapper() {
+    public CustomObjectMapper() {
         super();
         DefaultSerializerProvider.Impl sp = new DefaultSerializerProvider.Impl();
         sp.setNullValueSerializer(new JsonSerializer<Object>() {

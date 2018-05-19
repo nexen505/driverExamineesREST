@@ -3,18 +3,17 @@ package com.komarmoss.model.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.komarmoss.model.entity.OwnerEntity;
 import com.komarmoss.model.entity.VehicleEntity;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @XmlRootElement(name = "owner")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class OwnerVO implements Serializable {
+public class OwnerVO implements ValueObject<OwnerEntity> {
 
     private Integer id;
     private String name;
@@ -50,6 +49,7 @@ public class OwnerVO implements Serializable {
         }
     }
 
+    @NotNull
     public OwnerEntity createEntity() {
         OwnerEntity ownerEntity = new OwnerEntity();
         ownerEntity.setId(id);
@@ -57,7 +57,9 @@ public class OwnerVO implements Serializable {
         ownerEntity.setPatronymic(patronymic);
         ownerEntity.setSurname(surname);
         ownerEntity.setDateOfBirth(dateOfBirth);
-        ownerEntity.setTransportList(vehicles.parallelStream().map(VehicleVO::createEntity).filter(Objects::nonNull).collect(Collectors.toList()));
+        ownerEntity.setTransportList(vehicles.parallelStream()
+                .map(VehicleVO::createEntity)
+                .collect(Collectors.toList()));
         return ownerEntity;
     }
 

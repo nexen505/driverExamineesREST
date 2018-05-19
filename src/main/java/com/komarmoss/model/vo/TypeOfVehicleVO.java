@@ -1,15 +1,16 @@
 package com.komarmoss.model.vo;
 
 import com.komarmoss.model.entity.TypeOfVehicleEntity;
+import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
+import java.util.Collections;
 
 @XmlRootElement(name = "vehicleType")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TypeOfVehicleVO implements Serializable {
+public class TypeOfVehicleVO implements ValueObject<TypeOfVehicleEntity> {
     private Integer id;
     private String name;
     private Float minimumWeight;
@@ -31,13 +32,9 @@ public class TypeOfVehicleVO implements Serializable {
         }
     }
 
+    @NotNull
     public TypeOfVehicleEntity createEntity() {
-        TypeOfVehicleEntity typeOfVehicleEntity = new TypeOfVehicleEntity();
-        typeOfVehicleEntity.setId(id);
-        typeOfVehicleEntity.setName(name);
-        typeOfVehicleEntity.setMaximumWeight(maximumWeight);
-        typeOfVehicleEntity.setMinimumWeight(minimumWeight);
-        return typeOfVehicleEntity;
+        return new TypeOfVehicleEntity(id, name, minimumWeight, maximumWeight, Collections.emptyList());
     }
 
     public Integer getId() {

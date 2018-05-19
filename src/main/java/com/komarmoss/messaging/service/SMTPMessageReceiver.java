@@ -10,8 +10,8 @@ import java.text.MessageFormat;
 import java.util.logging.Logger;
 
 @Service
-public class MessageReceiver implements SessionAwareMessageListener<TextMessage> {
-    private static final Logger logger = Logger.getLogger(MessageReceiver.class.getName());
+public class SMTPMessageReceiver implements SessionAwareMessageListener<TextMessage> {
+    private static final Logger logger = Logger.getLogger(SMTPMessageReceiver.class.getName());
 
     @Override
     public void onMessage(TextMessage textMessage, Session session) throws JMSException {

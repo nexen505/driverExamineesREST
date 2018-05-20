@@ -14,12 +14,21 @@ public class ChangesMessageVO implements ValueObject<ChangesMessageEntity> {
     private ChangesMessageEntity.ChangesTypeEnum type;
     private Date time;
     private String details;
-    private String entityClass;
+    private String changedEntityClass;
 
-    @NotNull
-    @Override
-    public ChangesMessageEntity createEntity() {
-        return new ChangesMessageEntity(this.id, this.type, this.time, this.details, this.entityClass);
+    private ChangesMessageVO(ChangesMessageEntity.ChangesTypeEnum type, Date time, String details, String changedEntityClass) {
+        this.type = type;
+        this.time = time;
+        this.details = details;
+        this.changedEntityClass = changedEntityClass;
+    }
+
+    public ChangesMessageVO(ChangesMessageEntity entity) {
+        this.id = entity.getId();
+        this.type = entity.getType();
+        this.details = entity.getDetails();
+        this.time = entity.getTime();
+        this.changedEntityClass = entity.getChangedEntityClassName();
     }
 
     @NotNull
@@ -37,19 +46,10 @@ public class ChangesMessageVO implements ValueObject<ChangesMessageEntity> {
         return new ChangesMessageVO(ChangesMessageEntity.ChangesTypeEnum.UPDATE, new Date(), obj.toJson(), obj.getEntityClassName());
     }
 
-    private ChangesMessageVO(ChangesMessageEntity.ChangesTypeEnum type, Date time, String details, String entityClass) {
-        this.type = type;
-        this.time = time;
-        this.details = details;
-        this.entityClass = entityClass;
-    }
-
-    public ChangesMessageVO(ChangesMessageEntity entity) {
-        this.id = entity.getId();
-        this.type = entity.getType();
-        this.details = entity.getDetails();
-        this.time = entity.getTime();
-        this.entityClass = entity.getEntityClassName();
+    @NotNull
+    @Override
+    public ChangesMessageEntity createEntity() {
+        return new ChangesMessageEntity(this.id, this.type, this.time, this.details, this.changedEntityClass);
     }
 
     public Integer getId() {
@@ -68,7 +68,7 @@ public class ChangesMessageVO implements ValueObject<ChangesMessageEntity> {
         return details;
     }
 
-    public String getEntityClass() {
-        return entityClass;
+    public String getChangedEntityClass() {
+        return changedEntityClass;
     }
 }

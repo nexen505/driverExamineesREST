@@ -23,6 +23,7 @@ public class CustomObjectMapper extends ObjectMapper {
         });
         configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
         setSerializerProvider(sp);
+        enable(SerializationFeature.INDENT_OUTPUT);
     }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.jms.DeliveryMode;
 import javax.jms.Message;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.logging.Logger;
 
 @Service
@@ -27,18 +28,7 @@ public class MessageSender {
     public void send(final Serializable obj) {
         try {
             final String text = objectMapper.writeValueAsString(obj);
-            this.jmsTemplate.send(session -> {
-                Message message = session.createTextMessage(text);
-                message.setJMSDeliveryMode(DeliveryMode.PERSISTENT);
-                return message;
-            });
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void send(final String text) {
-        try {
+            logger.info(MessageFormat.format("Sending message: {0}", text));
             this.jmsTemplate.send(session -> {
                 Message message = session.createTextMessage(text);
                 message.setJMSDeliveryMode(DeliveryMode.PERSISTENT);

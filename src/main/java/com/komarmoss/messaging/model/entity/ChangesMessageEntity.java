@@ -14,13 +14,14 @@ public class ChangesMessageEntity implements Identifiable {
     private ChangesTypeEnum type;
     private Date time;
     private String details;
-    private String entityClassName;
+    private String changedEntityClassName;
 
-    public ChangesMessageEntity(Integer id, ChangesTypeEnum type, Date time, String details, String entityClassName) {
+    public ChangesMessageEntity(Integer id, ChangesTypeEnum type, Date time, String details, String changedEntityClassName) {
         this.id = id;
         this.type = type;
         this.time = time;
         this.details = details;
+        this.changedEntityClassName = changedEntityClassName;
     }
 
     public ChangesMessageEntity() {
@@ -66,12 +67,12 @@ public class ChangesMessageEntity implements Identifiable {
     }
 
     @Column(name = "entity_class_name", nullable = false)
-    public String getEntityClassName() {
-        return entityClassName;
+    public String getChangedEntityClassName() {
+        return changedEntityClassName;
     }
 
-    public void setEntityClassName(String entityClassName) {
-        this.entityClassName = entityClassName;
+    public void setChangedEntityClassName(String entityClassName) {
+        this.changedEntityClassName = entityClassName;
     }
 
     @Override
@@ -83,13 +84,13 @@ public class ChangesMessageEntity implements Identifiable {
                 type == entity.type &&
                 Objects.equals(time, entity.time) &&
                 Objects.equals(details, entity.details) &&
-                Objects.equals(entityClassName, entity.entityClassName);
+                Objects.equals(changedEntityClassName, entity.changedEntityClassName);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, type, time, details, entityClassName);
+        return Objects.hash(id, type, time, details, changedEntityClassName);
     }
 
     public enum ChangesTypeEnum {

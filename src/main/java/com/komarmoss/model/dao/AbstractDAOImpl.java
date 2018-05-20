@@ -15,9 +15,8 @@ import java.util.List;
 public abstract class AbstractDAOImpl<T extends Identifiable, ID extends Serializable>
         implements AbstractDAO<T, ID> {
 
-    protected Class daoType;
-    //    @PersistenceContext
-//    protected EntityManager entityManager;
+    private Class daoType;
+
     @Autowired
     private SessionFactory factory;
 
@@ -25,16 +24,10 @@ public abstract class AbstractDAOImpl<T extends Identifiable, ID extends Seriali
         Type t = getClass().getGenericSuperclass();
         ParameterizedType pt = (ParameterizedType) t;
         daoType = (Class) pt.getActualTypeArguments()[0];
-//        Configuration configuration = new Configuration().addAnnotatedClass(daoType);
-//        configuration.configure("hibernate.cfg.xml");
-//        StandardServiceRegistryBuilder serviceRegistryBuilder = new StandardServiceRegistryBuilder();
-//        serviceRegistryBuilder.applySettings(configuration.getProperties());
-//        factory = configuration.buildSessionFactory(serviceRegistryBuilder.build());
     }
 
     protected Session getSession() {
-        Session session = factory.getCurrentSession();
-        return session;
+        return factory.getCurrentSession();
     }
 
     @Override

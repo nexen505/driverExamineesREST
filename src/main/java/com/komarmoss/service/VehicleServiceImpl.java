@@ -59,7 +59,7 @@ public class VehicleServiceImpl implements VehicleService {
     public boolean removeVehicle(Integer id) {
         if (id != null) {
             vehicleDAO.removeItemById(id);
-            messageSender.send(ChangesMessageVO.createDeleteMessage(id));
+            messageSender.send(ChangesMessageVO.createDeleteMessage(VehicleEntity.class.getSimpleName(), id));
             return true;
         }
         return false;

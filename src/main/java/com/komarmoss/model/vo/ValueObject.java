@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 public interface ValueObject<T extends Identifiable> extends Serializable {
     @NotNull
@@ -19,5 +21,12 @@ public interface ValueObject<T extends Identifiable> extends Serializable {
         } catch (JsonProcessingException e) {
             return null;
         }
+    }
+
+    @NotNull
+    default String getEntityClassName() {
+        Type t = getClass().getGenericSuperclass();
+        ParameterizedType pt = (ParameterizedType) t;
+        return ((Class) pt.getActualTypeArguments()[0]).getSimpleName();
     }
 }

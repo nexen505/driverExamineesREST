@@ -18,5 +18,6 @@
         <mapping class="com.komarmoss.model.entity.OwnerEntity"/>
         <mapping class="com.komarmoss.model.entity.VehicleEntity"/>
         <mapping class="com.komarmoss.model.entity.TypeOfVehicleEntity"/>
+        <mapping class="com.komarmoss.messaging.model.entity.ChangesMessageEntity"/>
     </session-factory>
 </hibernate-configuration>

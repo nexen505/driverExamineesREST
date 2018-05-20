@@ -54,7 +54,7 @@ public class OwnerServiceImpl implements OwnerService {
     public boolean removeOwner(Integer id) {
         if (id != null) {
             ownerDAO.removeItemById(id);
-            messageSender.send(ChangesMessageVO.createDeleteMessage(id));
+            messageSender.send(ChangesMessageVO.createDeleteMessage(OwnerEntity.class.getSimpleName(), id));
             return true;
         }
         return false;

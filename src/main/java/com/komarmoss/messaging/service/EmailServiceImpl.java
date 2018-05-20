@@ -2,7 +2,6 @@ package com.komarmoss.messaging.service;
 
 import com.komarmoss.messaging.model.vo.ChangesMessageVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -15,14 +14,11 @@ public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender emailSender;
 
-    private final SimpleMailMessage simpleTemplate;
-
     private final SimpleMailMessage changesTemplate;
 
     @Autowired
-    public EmailServiceImpl(JavaMailSender emailSender, @Qualifier("simpleMessage") SimpleMailMessage simpleTemplate, @Qualifier("changesMessage") SimpleMailMessage changesTemplate) {
+    public EmailServiceImpl(JavaMailSender emailSender, SimpleMailMessage changesTemplate) {
         this.emailSender = emailSender;
-        this.simpleTemplate = simpleTemplate;
         this.changesTemplate = changesTemplate;
     }
 
@@ -33,11 +29,6 @@ public class EmailServiceImpl implements EmailService {
         message.setSubject(subject);
         message.setText(text);
         emailSender.send(message);
-    }
-
-    @Override
-    public void sendTemplateMessage(String to, String subject, Object... templateArgs) {
-        sendSimpleMessage(to, subject, String.format(simpleTemplate.getText(), templateArgs));
     }
 
     @Override

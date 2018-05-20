@@ -4,6 +4,7 @@ import com.komarmoss.model.entity.Identifiable;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "exdr_changes_subscribers", schema = "public", catalog = "postgres")
@@ -62,5 +63,22 @@ public class SubscriberEntity implements Identifiable {
 
     public void setType(ChangesMessageEntity.ChangesTypeEnum type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SubscriberEntity that = (SubscriberEntity) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(entityClassName, that.entityClassName) &&
+                type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, email, entityClassName, type);
     }
 }

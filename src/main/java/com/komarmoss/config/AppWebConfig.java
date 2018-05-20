@@ -42,8 +42,7 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public MappingJackson2HttpMessageConverter customJackson2HttpMessageConverter() {
-        MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter(customObjectMapper());
-        return jsonConverter;
+        return new MappingJackson2HttpMessageConverter(customObjectMapper());
     }
 
     @Bean
@@ -62,7 +61,7 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
     public DataSource dataSource() {
         final JndiDataSourceLookup jndiDataSourceLookup = new JndiDataSourceLookup();
         jndiDataSourceLookup.setResourceRef(true);
-        return jndiDataSourceLookup.getDataSource("jdbc/ExdrPool"); // add correct jndi name of DBMS
+        return jndiDataSourceLookup.getDataSource("jdbc/ExdrPool");
     }
 
     @Bean
@@ -145,14 +144,7 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
         return mailSender;
     }
 
-    @Bean("simpleMessage")
-    public SimpleMailMessage templateSimpleMessage() {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setText("This is the email template for your email:\n%s\n");
-        return message;
-    }
-
-    @Bean("changesMessage")
+    @Bean
     public SimpleMailMessage templateChangesMessage() {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setText("Hello! Due to your subscription to data changes, we notify you for it.\n%s\n");

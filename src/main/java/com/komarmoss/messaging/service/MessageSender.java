@@ -15,15 +15,11 @@ import java.util.logging.Logger;
 public class MessageSender {
     private static final Logger logger = Logger.getLogger(MessageSender.class.getName());
 
-    private final JmsTemplate jmsTemplate;
-
-    private final ObjectMapper objectMapper;
+    @Autowired
+    private JmsTemplate jmsTemplate;
 
     @Autowired
-    public MessageSender(JmsTemplate jmsTemplate, ObjectMapper objectMapper) {
-        this.jmsTemplate = jmsTemplate;
-        this.objectMapper = objectMapper;
-    }
+    private ObjectMapper objectMapper;
 
     public void send(final Serializable obj) {
         try {

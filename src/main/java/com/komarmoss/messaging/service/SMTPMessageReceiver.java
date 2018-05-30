@@ -1,6 +1,6 @@
 package com.komarmoss.messaging.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.komarmoss.config.CustomObjectMapper;
 import com.komarmoss.messaging.model.dao.SubscriberDAO;
 import com.komarmoss.messaging.model.entity.SubscriberEntity;
 import com.komarmoss.messaging.model.vo.ChangesMessageVO;
@@ -21,18 +21,14 @@ import java.util.logging.Logger;
 public class SMTPMessageReceiver implements SessionAwareMessageListener<TextMessage> {
     private static final Logger logger = Logger.getLogger(SMTPMessageReceiver.class.getName());
 
-    private final ObjectMapper objectMapper;
-
-    private final SubscriberDAO subscriberDAO;
-
-    private final EmailService emailService;
+    @Autowired
+    private CustomObjectMapper objectMapper;
 
     @Autowired
-    public SMTPMessageReceiver(ObjectMapper objectMapper, SubscriberDAO subscriberDAO, EmailService emailService) {
-        this.objectMapper = objectMapper;
-        this.subscriberDAO = subscriberDAO;
-        this.emailService = emailService;
-    }
+    private SubscriberDAO subscriberDAO;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public void onMessage(TextMessage textMessage, Session session) throws JMSException {

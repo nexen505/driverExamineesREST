@@ -1,10 +1,11 @@
 package com.komarmoss.config;
 
-import com.komarmoss.messaging.service.DBMessageReceiver;
+import com.komarmoss.messaging.service.*;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -25,6 +26,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
+import javax.jms.ConnectionFactory;
+import javax.jms.Destination;
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Properties;
@@ -68,7 +71,7 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
     public SessionFactory sessionFactory() {
         org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration();
         configuration.configure("hibernate.cfg.xml");
-        StandardServiceRegistryBuilder serviceRegistryBuilder = new StandardServiceRegistryBuilder();
+        final StandardServiceRegistryBuilder serviceRegistryBuilder = new StandardServiceRegistryBuilder();
         serviceRegistryBuilder.applySettings(configuration.getProperties());
         return configuration.buildSessionFactory(serviceRegistryBuilder.build());
     }
@@ -94,14 +97,19 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public CachingConnectionFactory connectionFactory() {
-        CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(amqConnectionFactory());
+        final CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(amqConnectionFactory());
         cachingConnectionFactory.setSessionCacheSize(10);
         return cachingConnectionFactory;
     }
 
     @Bean
-    public DBMessageReceiver getJmsMessageReceiver() {
+    public DBMessageReceiver getJmsDbMessageReceiver() {
         return new DBMessageReceiver();
+    }
+
+    @Bean
+    public SMTPMessageReceiver getJmsSMTPMessageReceiver() {
+        return new SMTPMessageReceiver();
     }
 
     @Bean
@@ -109,25 +117,41 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
         return new ActiveMQQueue("queue.queue_in");
     }
 
-    @Bean
-    public DefaultMessageListenerContainer messageListenerContainer() {
-        DefaultMessageListenerContainer defaultMessageListenerContainer = new DefaultMessageListenerContainer();
-        defaultMessageListenerContainer.setConnectionFactory(connectionFactory());
-        defaultMessageListenerContainer.setDestination(destination());
-        defaultMessageListenerContainer.setMessageListener(getJmsMessageReceiver());
+    @NotNull
+    private DefaultMessageListenerContainer getDefaultMessageListenerContainer(final ConnectionFactory connectionFactory, final Destination destination) {
+        final DefaultMessageListenerContainer defaultMessageListenerContainer = new DefaultMessageListenerContainer();
+        defaultMessageListenerContainer.setConnectionFactory(connectionFactory);
+        defaultMessageListenerContainer.setDestination(destination);
+        return defaultMessageListenerContainer;
+    }
+
+    @Bean(name = "dbListenerContainer")
+    @Autowired
+    public DefaultMessageListenerContainer dbListenerContainer(final ConnectionFactory connectionFactory, final Destination destination) {
+        final DefaultMessageListenerContainer defaultMessageListenerContainer = getDefaultMessageListenerContainer(connectionFactory, destination);
+        defaultMessageListenerContainer.setMessageListener(getJmsDbMessageReceiver());
+        return defaultMessageListenerContainer;
+    }
+
+    @Bean(name = "emailListenerContainer")
+    @Autowired
+    public DefaultMessageListenerContainer emailListenerContainer(final ConnectionFactory connectionFactory, final Destination destination) {
+        final DefaultMessageListenerContainer defaultMessageListenerContainer = getDefaultMessageListenerContainer(connectionFactory, destination);
+        defaultMessageListenerContainer.setMessageListener(getJmsSMTPMessageReceiver());
         return defaultMessageListenerContainer;
     }
 
     @Bean
-    public JmsTemplate jmsTemplate() {
-        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory());
-        jmsTemplate.setDefaultDestination(destination());
+    @Autowired
+    public JmsTemplate jmsTemplate(final ConnectionFactory connectionFactory, final Destination destination) {
+        final JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
+        jmsTemplate.setDefaultDestination(destination);
         return jmsTemplate;
     }
 
     @Bean
     public JavaMailSender getJavaMailSender() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
@@ -135,7 +159,7 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
         mailSender.setUsername("my.gmail@gmail.com");
         mailSender.setPassword("password");
 
-        Properties props = mailSender.getJavaMailProperties();
+        final Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -146,9 +170,19 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public SimpleMailMessage templateChangesMessage() {
-        SimpleMailMessage message = new SimpleMailMessage();
+        final SimpleMailMessage message = new SimpleMailMessage();
         message.setText("Hello! Due to your subscription to data changes, we notify you for it.\n%s\n");
         return message;
+    }
+
+    @Bean
+    public EmailService emailService() {
+        return new EmailServiceImpl();
+    }
+
+    @Bean
+    public MessageSender messageSender() {
+        return new MessageSender();
     }
 
 }

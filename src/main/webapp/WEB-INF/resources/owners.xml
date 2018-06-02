@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<owners>
+    <owner>
+        <id>1</id>
+        <name>Иван</name>
+        <patronymic>Иванович</patronymic>
+        <surname>Иванов</surname>
+        <dateOfBirth>12-12-12</dateOfBirth>
+    </owner>
+    <owner>
+        <id>2</id>
+        <name>Александр</name>
+        <patronymic>Александрович</patronymic>
+        <surname>Александров</surname>
+        <dateOfBirth>11-11-11</dateOfBirth>
+    </owner>
+    <owner>
+        <id>3</id>
+        <name>Петр</name>
+        <patronymic>Петрович</patronymic>
+        <surname>Петров</surname>
+        <dateOfBirth>10-10-10</dateOfBirth>
+    </owner>
+    <owner>
+        <id>4</id>
+        <name>Федор</name>
+        <patronymic>Федорович</patronymic>
+        <surname>Федоров</surname>
+        <dateOfBirth>09-09-09</dateOfBirth>
+    </owner>
+</owners>

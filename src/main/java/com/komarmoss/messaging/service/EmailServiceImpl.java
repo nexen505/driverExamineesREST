@@ -12,15 +12,11 @@ import java.util.Objects;
 @Component
 public class EmailServiceImpl implements EmailService {
 
-    private final JavaMailSender emailSender;
-
-    private final SimpleMailMessage changesTemplate;
+    @Autowired
+    private JavaMailSender emailSender;
 
     @Autowired
-    public EmailServiceImpl(JavaMailSender emailSender, SimpleMailMessage changesTemplate) {
-        this.emailSender = emailSender;
-        this.changesTemplate = changesTemplate;
-    }
+    private SimpleMailMessage changesTemplate;
 
     @Override
     public void sendSimpleMessage(String to, String subject, String text) {

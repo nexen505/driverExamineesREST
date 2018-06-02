@@ -14,7 +14,7 @@ public class CustomObjectMapper extends ObjectMapper {
 
     public CustomObjectMapper() {
         super();
-        DefaultSerializerProvider.Impl sp = new DefaultSerializerProvider.Impl();
+        final DefaultSerializerProvider.Impl sp = new DefaultSerializerProvider.Impl();
         sp.setNullValueSerializer(new JsonSerializer<Object>() {
             @Override
             public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {

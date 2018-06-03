@@ -1,5 +1,6 @@
 package com.komarmoss.model.vo;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.komarmoss.model.entity.TypeOfVehicleEntity;
 import org.jetbrains.annotations.NotNull;
@@ -8,9 +9,14 @@ import java.util.Collections;
 
 @JacksonXmlRootElement(localName = "typeOfVehicle")
 public class TypeOfVehicleVO implements ValueObject<TypeOfVehicleEntity> {
+
+    @JacksonXmlProperty(localName = "id")
     private Integer id;
+    @JacksonXmlProperty(localName = "name")
     private String name;
+    @JacksonXmlProperty(localName = "minimumWeight")
     private Float minimumWeight;
+    @JacksonXmlProperty(localName = "maximumWeight")
     private Float maximumWeight;
 
     public TypeOfVehicleVO() {

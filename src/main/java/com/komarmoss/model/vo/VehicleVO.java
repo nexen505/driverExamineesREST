@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 @JacksonXmlRootElement(localName = "vehicle")
 public class VehicleVO implements ValueObject<VehicleEntity> {
+
     @JacksonXmlProperty(localName = "id")
     private Integer id;
     @JacksonXmlProperty(localName = "name")

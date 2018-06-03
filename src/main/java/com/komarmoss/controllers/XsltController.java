@@ -2,12 +2,15 @@ package com.komarmoss.controllers;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.komarmoss.controllers.xsltWrappers.Owners;
+import com.komarmoss.controllers.xsltWrappers.TypesOfVehicle;
 import com.komarmoss.controllers.xsltWrappers.Vehicles;
 import com.komarmoss.service.OwnerService;
 import com.komarmoss.service.VehicleService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.w3c.dom.Document;
@@ -34,6 +37,7 @@ public class XsltController {
         this.vehicleService = vehicleService;
     }
 
+    @NotNull
     private Source createXsltSource(Object obj) throws Exception {
         final DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         final InputSource is = new InputSource(new StringReader(new XmlMapper().writeValueAsString(obj)));
@@ -41,21 +45,25 @@ public class XsltController {
         return new DOMSource(document);
     }
 
-    @RequestMapping(value = "/owners")
-    public ModelAndView findOwners(@RequestParam(name = "id", required = false) Integer id) throws Exception {
+    @NotNull
+    private ModelAndView getXsltView(Object obj) throws Exception {
         final ModelAndView modelAndView = new ModelAndView("XSLTView");
-        modelAndView.addObject("xmlSource", createXsltSource(
-                new Owners(id == null ? ownerService.findOwners() : Collections.singletonList(ownerService.findOwner(id)))
-        ));
+        modelAndView.addObject("xmlSource", createXsltSource(obj));
         return modelAndView;
     }
 
-    @RequestMapping(value = "/vehicles")
-    public ModelAndView findVehicles() throws Exception {
-        final ModelAndView modelAndView = new ModelAndView("XSLTView");
-        modelAndView.addObject("xmlSource", createXsltSource(
-                new Vehicles(vehicleService.findVehicles()))
-        );
-        return modelAndView;
+    @RequestMapping(value = "/owners", method = RequestMethod.GET)
+    public ModelAndView findOwners(@RequestParam(name = "id", required = false) Integer id) throws Exception {
+        return getXsltView(new Owners(id == null ? ownerService.findOwners() : Collections.singletonList(ownerService.findOwner(id))));
+    }
+
+    @RequestMapping(value = "/vehicles", method = RequestMethod.GET)
+    public ModelAndView findVehicles(@RequestParam(name = "id", required = false) Integer id) throws Exception {
+        return getXsltView(new Vehicles(id == null ? vehicleService.findVehicles() : Collections.singletonList(vehicleService.findVehicle(id))));
+    }
+
+    @RequestMapping(value = "/typesOfVehicle", method = RequestMethod.GET)
+    public ModelAndView findTypesOfVehicle() throws Exception {
+        return getXsltView(new TypesOfVehicle(vehicleService.getTypesOfVehicles()));
     }
 }

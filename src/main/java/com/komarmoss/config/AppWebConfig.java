@@ -193,8 +193,9 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public EmailService emailService() {
-        return new EmailServiceImpl();
+    @Autowired
+    public EmailService emailService(JavaMailSender emailSender, SimpleMailMessage changesTemplate) {
+        return new EmailServiceImpl(emailSender, changesTemplate);
     }
 
     @Bean

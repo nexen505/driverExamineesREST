@@ -25,7 +25,7 @@
         <xsl:for-each select="owner">
             <ul>
                 <li>
-                    Id:
+                    <xsl:text>Id: </xsl:text>
                     <xsl:value-of select="id"/>
                 </li>
                 <li>
@@ -36,6 +36,7 @@
                     <xsl:value-of select="surname"/>
                 </li>
                 <li>
+                    <xsl:text>Дата рождения: </xsl:text>
                     <xsl:value-of select="dateOfBirth"/>
                 </li>
                 <li>
@@ -46,42 +47,48 @@
         </xsl:for-each>
     </xsl:template>
     <xsl:template match="typesOfVehicle">
-        <table border="1" width="100%">
-            <xsl:for-each select="typeOfVehicle">
-                <tr>
-                    <td>
-                        <xsl:value-of select="id"/>
-                    </td>
-                    <td>
-                        <xsl:value-of select="name"/>
-                    </td>
-                    <td>
-                        <xsl:value-of select="minimum_weight"/>
-                    </td>
-                    <td>
-                        <xsl:value-of select="maximum_weight"/>
-                    </td>
-                </tr>
-            </xsl:for-each>
-        </table>
+        <xsl:for-each select="typeOfVehicle">
+            <ul>
+                <li>
+                    <xsl:text>Id: </xsl:text>
+                    <xsl:value-of select="id"/>
+                </li>
+                <li>
+                    <xsl:text>Название: </xsl:text>
+                    <xsl:value-of select="name"/>
+                </li>
+                <li>
+                    <xsl:text>Марка: </xsl:text>
+                    <xsl:value-of select="brand"/>
+                </li>
+                <li>
+                    <xsl:text>Минимальный вес (т): </xsl:text>
+                    <xsl:value-of select="minimumWeight"/>
+                </li>
+                <li>
+                    <xsl:text>Максимальный вес (т): </xsl:text>
+                    <xsl:value-of select="maximumWeight"/>
+                </li>
+            </ul>
+        </xsl:for-each>
     </xsl:template>
     <xsl:template match="vehicles">
         <xsl:for-each select="vehicle">
             <ul>
                 <li>
-                    Id:
+                    <xsl:text>Id: </xsl:text>
                     <xsl:value-of select="id"/>
                 </li>
                 <li>
-                    Название:
+                    <xsl:text>Название: </xsl:text>
                     <xsl:value-of select="name"/>
                 </li>
                 <li>
-                    Бренд:
+                    <xsl:text>Бренд: </xsl:text>
                     <xsl:value-of select="brand"/>
                 </li>
                 <li>
-                    Год выпуска:
+                    <xsl:text>Год выпуска: </xsl:text>
                     <xsl:value-of select="yearOfIssue"/>
                 </li>
             </ul>

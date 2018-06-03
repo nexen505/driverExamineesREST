@@ -11,6 +11,11 @@
             </body>
         </html>
     </xsl:template>
+    <xsl:template match="@* | node()">
+        <xsl:copy>
+            <xsl:apply-templates select="@* | node()"/>
+        </xsl:copy>
+    </xsl:template>
     <xsl:template match="owners">
         <table border="1" width="100%">
             <xsl:for-each select="owner">
@@ -31,9 +36,7 @@
                         <xsl:value-of select="dateOfBirth"/>
                     </td>
                 </tr>
-                <!--                <tr colspan="5">
-                                    <xsl:value-of select="vehicles"/>
-                                </tr>-->
+                <xsl:apply-templates select="vehicles"/>
             </xsl:for-each>
         </table>
     </xsl:template>
@@ -57,7 +60,6 @@
             </xsl:for-each>
         </table>
     </xsl:template>
-
     <xsl:template match="vehicles">
         <table border="1" width="100%">
             <xsl:for-each select="vehicle">

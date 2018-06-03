@@ -7,6 +7,7 @@ import com.komarmoss.model.entity.Identifiable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -26,6 +27,7 @@ public interface ValueObject<T extends Identifiable> extends Serializable {
 
     @NotNull
     @JsonIgnore
+    @XmlTransient
     default String getEntityClassName() {
         Type t = getClass().getGenericInterfaces()[0];
         ParameterizedType pt = (ParameterizedType) t;

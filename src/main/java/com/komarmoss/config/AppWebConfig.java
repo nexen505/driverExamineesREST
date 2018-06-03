@@ -12,8 +12,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
+import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
@@ -52,8 +53,10 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public Jaxb2RootElementHttpMessageConverter jaxb2RootElementHttpMessageConverter() {
-        return new Jaxb2RootElementHttpMessageConverter();
+    public MappingJackson2XmlHttpMessageConverter jaxb2RootElementHttpMessageConverter() {
+        Jackson2ObjectMapperBuilder builder = Jackson2ObjectMapperBuilder.xml();
+        builder.indentOutput(true);
+        return new MappingJackson2XmlHttpMessageConverter(builder.build());
     }
 
     @Override

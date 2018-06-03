@@ -1,22 +1,27 @@
 package com.komarmoss.model.vo;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.komarmoss.model.entity.OwnerEntity;
 import com.komarmoss.model.entity.TypeOfVehicleEntity;
 import com.komarmoss.model.entity.VehicleEntity;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlElement;
 
-@XmlRootElement(name = "vehicle")
-@XmlAccessorType(XmlAccessType.FIELD)
+@JacksonXmlRootElement(localName = "vehicle")
 public class VehicleVO implements ValueObject<VehicleEntity> {
+    @JacksonXmlProperty(localName = "id")
     private Integer id;
+    @JacksonXmlProperty(localName = "name")
     private String name;
+    @JacksonXmlProperty(localName = "brand")
     private String brand;
+    @JacksonXmlProperty(localName = "yearOfIssue")
     private Integer yearOfIssue;
-    private TypeOfVehicleVO type;
+    @JacksonXmlProperty(localName = "typeOfVehicle")
+    private TypeOfVehicleVO typeOfVehicle;
+    @JacksonXmlProperty(localName = "owner")
     private OwnerVO owner;
 
     public VehicleVO() {
@@ -30,7 +35,7 @@ public class VehicleVO implements ValueObject<VehicleEntity> {
             yearOfIssue = entity.getYearOfIssue();
             TypeOfVehicleEntity vehicleType = entity.getType();
             if (vehicleType != null)
-                type = new TypeOfVehicleVO(vehicleType.getId());
+                typeOfVehicle = new TypeOfVehicleVO(vehicleType.getId());
 
             OwnerEntity owner = entity.getOwner();
             if (owner != null)
@@ -46,9 +51,9 @@ public class VehicleVO implements ValueObject<VehicleEntity> {
         vehicleEntity.setBrand(brand);
         vehicleEntity.setYearOfIssue(yearOfIssue);
 
-        if (type != null) {
+        if (typeOfVehicle != null) {
             TypeOfVehicleEntity typeOfVehicleEntity = new TypeOfVehicleEntity();
-            typeOfVehicleEntity.setId(type.getId());
+            typeOfVehicleEntity.setId(typeOfVehicle.getId());
             vehicleEntity.setType(typeOfVehicleEntity);
         }
 
@@ -93,14 +98,16 @@ public class VehicleVO implements ValueObject<VehicleEntity> {
         this.yearOfIssue = yearOfIssue;
     }
 
-    public TypeOfVehicleVO getType() {
-        return type;
+    @XmlElement(name = "typeOfVehicle", namespace = "driverApp")
+    public TypeOfVehicleVO getTypeOfVehicle() {
+        return typeOfVehicle;
     }
 
-    public void setType(TypeOfVehicleVO type) {
-        this.type = type;
+    public void setTypeOfVehicle(TypeOfVehicleVO type) {
+        this.typeOfVehicle = type;
     }
 
+    @XmlElement(name = "owner", namespace = "driverApp")
     public OwnerVO getOwner() {
         return owner;
     }

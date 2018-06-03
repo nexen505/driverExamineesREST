@@ -1,15 +1,12 @@
 package com.komarmoss.model.vo;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.komarmoss.model.entity.TypeOfVehicleEntity;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Collections;
 
-@XmlRootElement(name = "vehicleType")
-@XmlAccessorType(XmlAccessType.FIELD)
+@JacksonXmlRootElement(localName = "typeOfVehicle")
 public class TypeOfVehicleVO implements ValueObject<TypeOfVehicleEntity> {
     private Integer id;
     private String name;

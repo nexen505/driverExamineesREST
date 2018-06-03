@@ -1,5 +1,7 @@
 package com.komarmoss.controllers.xsltWrappers;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.komarmoss.model.vo.OwnerVO;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -14,6 +16,8 @@ import java.util.List;
 @XmlRootElement(name = "owners")
 public class Owners implements Serializable {
 
+    @JacksonXmlElementWrapper(localName = "owners")
+    @JacksonXmlProperty(localName = "owner")
     @XmlElement(name = "owner", type = OwnerVO.class)
     private List<OwnerVO> owners = new ArrayList<>();
 

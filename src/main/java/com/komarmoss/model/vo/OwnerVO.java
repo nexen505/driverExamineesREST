@@ -1,28 +1,34 @@
 package com.komarmoss.model.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.komarmoss.model.entity.OwnerEntity;
 import com.komarmoss.model.entity.VehicleEntity;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.bind.annotation.*;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@XmlRootElement(name = "owner")
-@XmlAccessorType(XmlAccessType.FIELD)
+@JacksonXmlRootElement(localName = "owner")
 public class OwnerVO implements ValueObject<OwnerEntity> {
 
+    @JacksonXmlProperty(localName = "id")
     private Integer id;
+    @JacksonXmlProperty(localName = "name")
     private String name;
+    @JacksonXmlProperty(localName = "patronymic")
     private String patronymic;
+    @JacksonXmlProperty(localName = "surname")
     private String surname;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JacksonXmlProperty(localName = "dateOfBirth")
     private Date dateOfBirth;
-    @XmlElementWrapper(name = "vehicles")
-    @XmlElement(name = "vehicle")
+    @JacksonXmlElementWrapper(localName = "vehicles")
+    @JacksonXmlProperty(localName = "vehicle")
     private List<VehicleVO> vehicles = Collections.emptyList();
 
     public OwnerVO() {

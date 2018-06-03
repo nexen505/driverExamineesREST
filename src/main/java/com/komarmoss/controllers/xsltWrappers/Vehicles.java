@@ -1,5 +1,7 @@
 package com.komarmoss.controllers.xsltWrappers;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.komarmoss.model.vo.VehicleVO;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -14,6 +16,8 @@ import java.util.List;
 @XmlRootElement(name = "vehicles")
 public class Vehicles implements Serializable {
 
+    @JacksonXmlElementWrapper(localName = "vehicles")
+    @JacksonXmlProperty(localName = "vehicle")
     @XmlElement(name = "vehicle", type = VehicleVO.class)
     private List<VehicleVO> vehicles = new ArrayList<>();
 

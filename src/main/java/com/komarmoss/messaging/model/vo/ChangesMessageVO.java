@@ -16,6 +16,9 @@ public class ChangesMessageVO implements ValueObject<ChangesMessageEntity> {
     private String details;
     private String changedEntityClass;
 
+    public ChangesMessageVO() {
+    }
+
     private ChangesMessageVO(ChangesMessageEntity.ChangesTypeEnum type, Date time, String details, String changedEntityClass) {
         this.type = type;
         this.time = time;

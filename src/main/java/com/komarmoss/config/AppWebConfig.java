@@ -2,7 +2,7 @@ package com.komarmoss.config;
 
 import com.komarmoss.messaging.service.*;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.activemq.command.ActiveMQTopic;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.jetbrains.annotations.NotNull;
@@ -113,8 +113,8 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    public ActiveMQQueue destination() {
-        return new ActiveMQQueue("queue.queue_in");
+    public ActiveMQTopic destination() {
+        return new ActiveMQTopic("driverApp.topic");
     }
 
     @NotNull

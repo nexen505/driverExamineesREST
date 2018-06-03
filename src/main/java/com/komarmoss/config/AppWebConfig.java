@@ -23,8 +23,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.view.xslt.XsltView;
+import org.springframework.web.servlet.view.xslt.XsltViewResolver;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -58,6 +61,18 @@ public class AppWebConfig extends WebMvcConfigurationSupport {
         converters.add(customJackson2HttpMessageConverter());
         converters.add(jaxb2RootElementHttpMessageConverter());
         super.addDefaultHttpMessageConverters(converters);
+    }
+
+    @Bean
+    public ViewResolver getXLTViewResolver() {
+        final XsltViewResolver xsltViewResolver = new XsltViewResolver();
+        xsltViewResolver.setOrder(1);
+        xsltViewResolver.setSourceKey("xmlSource");
+        xsltViewResolver.setViewClass(XsltView.class);
+        xsltViewResolver.setViewNames("XSLTView");
+        xsltViewResolver.setPrefix("/WEB-INF/xsl/");
+        xsltViewResolver.setSuffix(".xsl");
+        return xsltViewResolver;
     }
 
     @Bean

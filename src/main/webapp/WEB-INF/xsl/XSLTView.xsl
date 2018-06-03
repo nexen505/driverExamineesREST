@@ -11,32 +11,33 @@
             </body>
         </html>
     </xsl:template>
-    <xsl:template match="@* | node()">
-        <xsl:copy>
-            <xsl:apply-templates select="@* | node()"/>
-        </xsl:copy>
-    </xsl:template>
     <xsl:template match="owners">
         <table border="1" width="100%">
             <xsl:for-each select="owner">
                 <tr>
                     <td>
-                        <xsl:value-of select="id"/>
+                        <ul>
+                            <li>
+                                <xsl:value-of select="id"/>
+                            </li>
+                            <li>
+                                <xsl:value-of select="name"/>
+                            </li>
+                            <li>
+                                <xsl:value-of select="patronymic"/>
+                            </li>
+                            <li>
+                                <xsl:value-of select="surname"/>
+                            </li>
+                            <li>
+                                <xsl:value-of select="dateOfBirth"/>
+                            </li>
+                        </ul>
                     </td>
                     <td>
-                        <xsl:value-of select="name"/>
-                    </td>
-                    <td>
-                        <xsl:value-of select="patronymic"/>
-                    </td>
-                    <td>
-                        <xsl:value-of select="surname"/>
-                    </td>
-                    <td>
-                        <xsl:value-of select="dateOfBirth"/>
+                        <xsl:apply-templates select="vehicles"/>
                     </td>
                 </tr>
-                <xsl:apply-templates select="vehicles"/>
             </xsl:for-each>
         </table>
     </xsl:template>
@@ -61,22 +62,22 @@
         </table>
     </xsl:template>
     <xsl:template match="vehicles">
-        <table border="1" width="100%">
+        <table border="2" width="100%">
             <xsl:for-each select="vehicle">
-                <tr>
-                    <td>
+                <ul>
+                    <li>
                         <xsl:value-of select="id"/>
-                    </td>
-                    <td>
+                    </li>
+                    <li>
                         <xsl:value-of select="name"/>
-                    </td>
-                    <td>
+                    </li>
+                    <li>
                         <xsl:value-of select="brand"/>
-                    </td>
-                    <td>
+                    </li>
+                    <li>
                         <xsl:value-of select="yearOfIssue"/>
-                    </td>
-                </tr>
+                    </li>
+                </ul>
             </xsl:for-each>
         </table>
     </xsl:template>

@@ -49,6 +49,7 @@ public class ChangesMessageEntity implements Identifiable {
     }
 
     @Column(name = "time", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     public Date getTime() {
         return time;
     }

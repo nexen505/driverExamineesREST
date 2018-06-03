@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<vehicles>
+    <vehicle>
+        <id>1</id>
+        <name>Qashqai</name>
+        <brand>Nissan</brand>
+        <yearOfIssue>2012</yearOfIssue>
+        <id_vehicle>1</id_vehicle>
+        <type_id>2</type_id>
+    </vehicle>
+    <vehicle>
+        <id>2</id>
+        <name> CX-3 </name>
+        <brand>Mazda</brand>
+        <yearOfIssue>2014</yearOfIssue>
+        <id_vehicle>2</id_vehicle>
+        <type_id>1</type_id>
+    </vehicle>
+    <vehicle>
+        <id>3</id>
+        <name>Rio</name>
+        <brand>Kia</brand>
+        <yearOfIssue>2015</yearOfIssue>
+        <id_vehicle>1</id_vehicle>
+        <type_id>3</type_id>
+    </vehicle>
+    <vehicle>
+        <id>4</id>
+        <name>Spark</name>
+        <brand>Chevrolet</brand>
+        <yearOfIssue>2017</yearOfIssue>
+        <id_vehicle>3</id_vehicle>
+        <type_id>1</type_id>
+    </vehicle>
+</vehicles>

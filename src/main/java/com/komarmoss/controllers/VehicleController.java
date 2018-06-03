@@ -6,6 +6,8 @@ import com.komarmoss.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/vehicles")
 public class VehicleController {
@@ -17,9 +19,9 @@ public class VehicleController {
         this.vehicleService = vehicleService;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json", "application/xml"})
-    public WebResponseVO findVehicle(@PathVariable(required = false) Integer id) {
-        return new WebResponseVO(id != null ? vehicleService.findVehicle(id) : vehicleService.findVehicles());
+    @RequestMapping(value = {"/{id}", "/"}, method = RequestMethod.GET, produces = {"application/json", "application/xml"})
+    public WebResponseVO findVehicle(@PathVariable("id") Optional<Integer> id) {
+        return new WebResponseVO(id.isPresent() ? vehicleService.findVehicle(id.get()) : vehicleService.findVehicles());
     }
 
     @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT}, produces = {"application/json", "application/xml"}, consumes = {"application/json", "application/xml"})
